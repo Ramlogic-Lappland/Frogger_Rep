@@ -10,36 +10,35 @@ frogHeight = frogImage:getHeight()
 
 frogX = (screenWidth / 2) - (frogWidth / 2)
 frogY = screenHeight - frogHeight
-
+moveY = 0
 frogSpeed = 150
 
 end
 
 function love.update(dt)
 
-    if love.keyboard.isDown("right") then
+    if love.keyboard.isDown("right")  then
         if (frogX < screenWidth - frogWidth ) then
             frogX = frogX + frogSpeed * dt
         end
-    end
-    if love.keyboard.isDown("left") then
+    elseif
+        love.keyboard.isDown("left")  then
         if (frogX > 0 ) then
-            frogX = frogX - frogSpeed * dt
+          frogX = frogX - frogSpeed * dt
         end
-    end
-    if love.keyboard.isDown("up") then
+    elseif
+        love.keyboard.isDown("up")  then
         if (frogY > 0 ) then
             frogY = frogY - frogSpeed * dt
         end
-    end
-    if love.keyboard.isDown("down") then
+    elseif
+        love.keyboard.isDown("down") then
         if (frogY < screenHeight - frogHeight ) then
             frogY = frogY + frogSpeed * dt
         end
     end
-
-
 end
+
 
 function love.draw()
     love.graphics.draw(frogImage, frogX, frogY)

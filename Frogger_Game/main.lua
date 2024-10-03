@@ -1,43 +1,50 @@
 function love.load()
- -- SCREEN HEIGHT = 600 & WIDTH = 800
 
-green = {0, 1, 0, 1} 
 screenWidth = love.graphics.getWidth()
 screenHeight = love.graphics.getHeight()
+-- SCREEN HEIGHT = 600 & WIDTH = 800
 
+-- IMAGES LOAD
 frogImage = love.graphics.newImage("res/frogx2ver2.png")
 hearth = love.graphics.newImage("res/hearth.png")
 background = love.graphics.newImage("res/Background.png")
 chatBox = love.graphics.newImage("res/box2.png")
 croc = love.graphics.newImage("res/croc.png")
+-- END IMAGES LOAD
+
+-- FROG
 frogWidth = frogImage:getWidth()
 frogHeight = frogImage:getHeight()
-
-
-frogX = (screenWidth / 2) - (frogWidth / 2)
-frogY = screenHeight - frogHeight
-moveY = 0
+frogStartX = (screenWidth / 2) - (frogWidth / 2)
+frogStartY = screenHeight - frogHeight
+frogX = frogStartX
+frogY = frogStartY
 frogSpeed = 150
+frogLives = 3
+-- END FROG
 
+-- MESSAGE
+green = {0, 1, 0, 1} 
 love.graphics.setFont(love.graphics.newFont(20))
-
 helloMsgX = frogX - 160
 helloMsgY = frogY - 40
 helloBoxX = helloMsgX - 20
 helloBoxY= helloMsgY - 15
+-- END MESSAGE
 
-crocWidth = croc:getWidth()
-crocHeight = croc:getHeight()
+--CROC
+crocWidth = croc:getWidth() / 2
+crocHeight = croc:getHeight() / 2
+crocStartPosX = 0 - crocWidth * 2
+croc1Y = screenHeight - crocHeight * 2
+croc1X = crocStartPosX
+-- END CROC
 
-crocStartPosX = 0 - crocWidth /2
-croc1posY = screenHeight - crocHeight
-croc1PosX = crocStartPosX
-
-frogLives = 3
+-- BOOLS
 notShowMsg = false
 gameOver = false
 win = false
-
+-- BOOLS
 end
 
 function love.update(dt)
@@ -45,12 +52,22 @@ function love.update(dt)
 if (gameOver == false) then
 if (win == false) then 
 
+    if checkCollision(croc1X, croc1Y, crocWidth, crocHeight, frogX, frogY, frogWidth, frogHeight) then
+        frogLives = frogLives -1
+        croc1X = crocStartPosX
+        frogX = frogStartX
+        frogY = frogStartY
+    end
 
-    if (croc1PosX < screenWidth + crocWidth / 2) then
-        croc1PosX = croc1PosX + frogSpeed * dt
+    if (frogLives < 1) then
+        gameOver = true
+    end
+
+    if (croc1X < screenWidth + crocWidth ) then
+        croc1X = croc1X + frogSpeed * dt
     elseif
-    (croc1PosX >= screenWidth + crocWidth / 2) then
-        croc1PosX = crocStartPosX
+    (croc1X >= screenWidth + crocWidth ) then
+        croc1X = crocStartPosX
     end
 
     if love.keyboard.isDown("right")  then --MOVEMENT IF START
@@ -98,7 +115,7 @@ function love.draw()
     love.graphics.print( "X"..frogLives, 40, 5)
 
     love.graphics.draw(frogImage, frogX, frogY)
-    love.graphics.draw(croc, croc1PosX, croc1posY, o , 0.5, 0.5)
+    love.graphics.draw(croc, croc1X, croc1Y, o , 0.5, 0.5)
     
     if (notShowMsg == false) then
         love.graphics.draw(chatBox, helloBoxX, helloBoxY)
@@ -106,3 +123,9 @@ function love.draw()
     end
 end
 
+function checkCollision(x1, y1, w1, h1, x2, y2, w2, h2)
+    return x1 < x2 + w2 and
+           x2 < x1 + w1 and
+           y1 < y2 + h2 and
+           y2 < y1 + h1
+end

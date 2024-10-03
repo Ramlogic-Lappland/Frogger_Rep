@@ -27,8 +27,11 @@ helloBoxX = helloMsgX - 20
 helloBoxY= helloMsgY - 15
 
 crocWidth = croc:getWidth()
-crocStartPosX = 0 - crocWidth
-croc1Pos = crocStartPosX
+crocHeight = croc:getHeight()
+
+crocStartPosX = 0 - crocWidth /2
+croc1posY = screenHeight - crocHeight
+croc1PosX = crocStartPosX
 
 frogLives = 3
 notShowMsg = false
@@ -43,11 +46,11 @@ if (gameOver == false) then
 if (win == false) then 
 
 
-    if (croc1Pos < screenWidth + crocWidth ) then
-        croc1Pos = croc1Pos + frogSpeed * dt
+    if (croc1PosX < screenWidth + crocWidth / 2) then
+        croc1PosX = croc1PosX + frogSpeed * dt
     elseif
-    (croc1Pos >= screenWidth + crocWidth) then
-        croc1Pos = crocStartPosX
+    (croc1PosX >= screenWidth + crocWidth / 2) then
+        croc1PosX = crocStartPosX
     end
 
     if love.keyboard.isDown("right")  then --MOVEMENT IF START
@@ -95,7 +98,7 @@ function love.draw()
     love.graphics.print( "X"..frogLives, 40, 5)
 
     love.graphics.draw(frogImage, frogX, frogY)
-    love.graphics.draw(croc, croc1Pos, 200, o , 0.5, 0.5)
+    love.graphics.draw(croc, croc1PosX, croc1posY, o , 0.5, 0.5)
     
     if (notShowMsg == false) then
         love.graphics.draw(chatBox, helloBoxX, helloBoxY)

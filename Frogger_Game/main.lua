@@ -9,7 +9,8 @@ frogImage = love.graphics.newImage("res/frogx2ver2.png")
 hearth = love.graphics.newImage("res/hearth.png")
 background = love.graphics.newImage("res/Background.png")
 chatBox = love.graphics.newImage("res/box2.png")
-croc = love.graphics.newImage("res/croc.png")
+crocImage = love.graphics.newImage("res/croc.png")
+ouchImage = love.graphics.newImage("res/ouch2.png")
 -- END IMAGES LOAD
 
 -- FROG
@@ -28,13 +29,15 @@ green = {0, 1, 0, 1}
 love.graphics.setFont(love.graphics.newFont(20))
 helloMsgX = frogX - 160
 helloMsgY = frogY - 40
+ouchMsgX = frogX + 40
+ouchMsgY = helloMsgY
 helloBoxX = helloMsgX - 20
 helloBoxY= helloMsgY - 15
 -- END MESSAGE
 
 --CROC
-crocWidth = croc:getWidth() / 2
-crocHeight = croc:getHeight() / 2
+crocWidth = crocImage:getWidth() / 2
+crocHeight = crocImage:getHeight() / 2
 crocStartPosX = 0 - crocWidth * 2
 croc1Y = screenHeight - crocHeight * 2
 croc1X = crocStartPosX
@@ -44,6 +47,7 @@ croc1X = crocStartPosX
 notShowMsg = false
 gameOver = false
 win = false
+ouchMsg = false
 -- BOOLS
 end
 
@@ -57,6 +61,7 @@ if (win == false) then
         croc1X = crocStartPosX
         frogX = frogStartX
         frogY = frogStartY
+        ouchMsg = true
     end
 
     if (frogLives < 1) then
@@ -73,6 +78,9 @@ if (win == false) then
     if love.keyboard.isDown("right")  then --MOVEMENT IF START
         if (frogX < screenWidth - frogWidth ) then
             frogX = frogX + frogSpeed * dt
+            if (ouchMsg == true) then 
+                ouchMsg = false
+            end
             if (notShowMsg == false) then
                 notShowMsg = true
             end
@@ -81,6 +89,9 @@ if (win == false) then
         love.keyboard.isDown("left")  then
         if (frogX > 0 ) then
           frogX = frogX - frogSpeed * dt
+          if (ouchMsg == true) then 
+            ouchMsg = false
+        end
           if (notShowMsg == false) then
             notShowMsg = true
         end
@@ -89,6 +100,9 @@ if (win == false) then
         love.keyboard.isDown("up")  then
         if (frogY > 0 ) then
             frogY = frogY - frogSpeed * dt
+            if (ouchMsg == true) then 
+                ouchMsg = false
+            end
             if (notShowMsg == false) then
                 notShowMsg = true
             end
@@ -97,6 +111,9 @@ if (win == false) then
         love.keyboard.isDown("down") then
         if (frogY < screenHeight - frogHeight ) then
             frogY = frogY + frogSpeed * dt
+            if (ouchMsg == true) then 
+                ouchMsg = false
+            end
             if (notShowMsg == false) then
                 notShowMsg = true
             end
@@ -105,7 +122,7 @@ if (win == false) then
 
 end-- WIN  
 end-- GAME OVER
-end
+end-- END UPDATE
 
 
 function love.draw()
@@ -115,8 +132,11 @@ function love.draw()
     love.graphics.print( "X"..frogLives, 40, 5)
 
     love.graphics.draw(frogImage, frogX, frogY)
-    love.graphics.draw(croc, croc1X, croc1Y, o , 0.5, 0.5)
+    love.graphics.draw(crocImage, croc1X, croc1Y, o , 0.5, 0.5)
     
+    if (ouchMsg == true) then
+        love.graphics.draw(ouchImage, ouchMsgX, ouchMsgY)
+    end
     if (notShowMsg == false) then
         love.graphics.draw(chatBox, helloBoxX, helloBoxY)
         love.graphics.print( {green ,"Hello, Im Frog, USE the ARROW KEYS to MOVE"}, helloMsgX, helloMsgY)

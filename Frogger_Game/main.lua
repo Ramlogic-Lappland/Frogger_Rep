@@ -40,8 +40,19 @@ helloBoxY= helloMsgY - 15
 crocWidth = crocImage:getWidth() / 2
 crocHeight = crocImage:getHeight() / 2
 crocStartPosX = 0 - crocWidth * 2
+
+crocSpeed1 = 100
+crocSpeed2 = 200
+crocSpeed3 = 300
+
 croc1Y = screenHeight - crocHeight * 2
 croc1X = crocStartPosX
+croc2Y = croc1Y
+croc2X = crocStartPosX * 2
+croc3Y = croc1Y
+croc3X = crocStartPosX * 3 
+croc4Y = croc1Y
+croc4X = crocStartPosX * 4 
 -- END CROC
 
 -- BOOLS
@@ -72,6 +83,39 @@ if (win == false) then
     if checkCollision(croc1X, croc1Y, crocWidth, crocHeight, frogX, frogY, frogWidth, frogHeight) then
         frogLives = frogLives -1
         croc1X = crocStartPosX
+        croc2X = crocStartPosX * 2
+        croc3X = crocStartPosX * 3
+        croc4X = crocStartPosX * 4 
+        frogX = frogStartX
+        frogY = frogStartY
+        ouchMsg = true
+    end
+    if checkCollision(croc2X, croc2Y, crocWidth, crocHeight, frogX, frogY, frogWidth, frogHeight) then
+        frogLives = frogLives -1
+        croc1X = crocStartPosX
+        croc2X = crocStartPosX * 2
+        croc3X = crocStartPosX * 3
+        croc4X = crocStartPosX * 4 
+        frogX = frogStartX
+        frogY = frogStartY
+        ouchMsg = true
+    end
+    if checkCollision(croc3X, croc3Y, crocWidth, crocHeight, frogX, frogY, frogWidth, frogHeight) then
+        frogLives = frogLives -1
+        croc1X = crocStartPosX
+        croc2X = crocStartPosX * 2
+        croc3X = crocStartPosX * 3
+        croc4X = crocStartPosX * 4 
+        frogX = frogStartX
+        frogY = frogStartY
+        ouchMsg = true
+    end
+    if checkCollision(croc4X, croc4Y, crocWidth, crocHeight, frogX, frogY, frogWidth, frogHeight) then
+        frogLives = frogLives -1
+        croc1X = crocStartPosX
+        croc2X = crocStartPosX * 2
+        croc3X = crocStartPosX * 3
+        croc4X = crocStartPosX * 4 
         frogX = frogStartX
         frogY = frogStartY
         ouchMsg = true
@@ -81,12 +125,35 @@ if (win == false) then
         gameOver = true
     end
 
+    -- FIRST LINE OF CROCS
     if (croc1X < screenWidth + crocWidth ) then
-        croc1X = croc1X + frogSpeed * dt
+        croc1X = croc1X + crocSpeed1 * dt
     elseif
     (croc1X >= screenWidth + crocWidth ) then
         croc1X = crocStartPosX
     end
+
+    if (croc2X < screenWidth + crocWidth ) then
+        croc2X = croc2X + crocSpeed1 * dt
+    elseif
+    (croc2X >= screenWidth + crocWidth  ) then
+        croc2X = crocStartPosX 
+    end
+
+    if (croc3X < screenWidth + crocWidth ) then
+        croc3X = croc3X + crocSpeed1 * dt
+    elseif
+    (croc3X >= screenWidth + crocWidth ) then
+        croc3X = crocStartPosX
+    end
+
+    if (croc4X < screenWidth + crocWidth ) then
+        croc4X = croc4X + crocSpeed1 * dt
+    elseif
+    (croc4X >= screenWidth + crocWidth ) then
+        croc4X = crocStartPosX
+    end
+    -- END FIRST LINE OF CROCS
 
     if love.keyboard.isDown("right")  then --MOVEMENT IF START
         if (frogX < screenWidth - frogWidth ) then
@@ -146,7 +213,10 @@ function love.draw()
 
     love.graphics.draw(frogImage, frogX, frogY)
     love.graphics.draw(crocImage, croc1X, croc1Y, o , 0.5, 0.5)
-    
+    love.graphics.draw(crocImage, croc2X, croc2Y, o , 0.5, 0.5)
+    love.graphics.draw(crocImage, croc3X, croc3Y, o , 0.5, 0.5)
+    love.graphics.draw(crocImage, croc4X, croc4Y, o , 0.5, 0.5)
+
     if (ouchMsg == true) then
         love.graphics.draw(ouchImage, ouchMsgX, ouchMsgY)
     end
@@ -154,6 +224,7 @@ function love.draw()
         love.graphics.draw(chatBox, helloBoxX, helloBoxY)
         love.graphics.print( {green ,"Hello, Im Frog, USE the ARROW KEYS to MOVE"}, helloMsgX, helloMsgY)
     end
+
     if (gameOver == true) then
         love.graphics.draw(gameOverImage, 250, 150)
     end

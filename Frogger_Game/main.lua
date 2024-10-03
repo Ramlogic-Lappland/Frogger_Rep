@@ -11,6 +11,7 @@ background = love.graphics.newImage("res/Background.png")
 chatBox = love.graphics.newImage("res/box2.png")
 crocImage = love.graphics.newImage("res/croc.png")
 ouchImage = love.graphics.newImage("res/ouch2.png")
+gameOverImage = love.graphics.newImage("res/GameOver.png")
 -- END IMAGES LOAD
 
 -- FROG
@@ -52,6 +53,18 @@ ouchMsg = false
 end
 
 function love.update(dt)
+
+    if (gameOver == true) then
+        if love.keyboard.isDown("r") then
+            gameOver = false
+            notShowMsg = false
+            ouchMsg = false
+            croc1X = crocStartPosX
+            frogX = frogStartX
+            frogY = frogStartY
+            frogLives = 3
+        end
+    end
 
 if (gameOver == false) then
 if (win == false) then 
@@ -140,6 +153,9 @@ function love.draw()
     if (notShowMsg == false) then
         love.graphics.draw(chatBox, helloBoxX, helloBoxY)
         love.graphics.print( {green ,"Hello, Im Frog, USE the ARROW KEYS to MOVE"}, helloMsgX, helloMsgY)
+    end
+    if (gameOver == true) then
+        love.graphics.draw(gameOverImage, 250, 150)
     end
 end
 
